@@ -1,5 +1,6 @@
 <?php
 
+
 //////////////////////////
 //// Factorial
 function factorial($number){ 
@@ -140,6 +141,10 @@ function reducing_combination($combination_working,$parts_working){
 	
 	return $combination_working;
 }
+//////////////////////////
+
+
+
 
 //////////////////////////
 
@@ -386,49 +391,20 @@ sort($total_comb_sort);
 
 $total_m = $m1 + $m2 + $m3 + $m4; 
 
+$max_containers = $number1 + $number2 + $number3 + $number4 + $number5 + $number6 + $number7 + $number8 + $number9 + $number10;
+
+$size_usage = $number1*$size1 + $number2*$size2 + $number3*$size3 + $number4*$size4 + $number5*$size5 + $number6*$size6 + $number7*$size7 + $number8*$size8 + $number9*$size9 + $number10*$size10;
+
+$max_unused = $container * $max_containers - $size_usage;
+$max_cuts = $max_containers;
 
 for ($i=0;$i<count($total_w);$i++){
-	$total_multicriterial[$i] = 0;
 	
-	if ($total_m){
-		$key = array_search($total_cont[$i], $total_cont_sort);
-		if ($m1){
-			if ($m1!=$total_m){
-				if (false !== $key) $total_multicriterial[$i] = $total_multicriterial[$i] + $key * (1-$m1/$total_m);
-			}else{
-				if (false !== $key) $total_multicriterial[$i] = $total_multicriterial[$i] + $key;
-			}
-		}
+	$total_multicriterial[$i] = (1 - $total_cont[$i] / $max_containers) * $m1;
+	$total_multicriterial[$i] += (1 - $total_comb[$i] / count($combination_optimal)) * $m2;
+	$total_multicriterial[$i] += (1 - $total_cut[$i] / $max_containers) * $m3;
+	$total_multicriterial[$i] += (1 - $total_unused[$i] / $max_unused) * $m4;
 	
-		$key = array_search($total_comb[$i], $total_comb_sort);
-		if ($m2){
-			if ($m2!=$total_m){
-				if (false !== $key) $total_multicriterial[$i] = $total_multicriterial[$i] + $key * (1-$m2/$total_m);
-			}else{
-				if (false !== $key) $total_multicriterial[$i] = $total_multicriterial[$i] + $key;
-			}
-		}
-		
-
-		$key = array_search($total_cut[$i], $total_cut_sort);
-		if ($m3){
-			if ($m3!=$total_m){
-				if (false !== $key) $total_multicriterial[$i] = $total_multicriterial[$i] + $key * (1-$m3/$total_m);
-			}else{
-				if (false !== $key) $total_multicriterial[$i] = $total_multicriterial[$i] + $key;
-			}
-		}
-		
-		$key = array_search($total_unused[$i], $total_unused_sort);
-		if ($m4){
-			if ($m4!=$total_m){
-				if (false !== $key) $total_multicriterial[$i] = $total_multicriterial[$i] + $key * (1-$m4/$total_m);
-			}else{
-				if (false !== $key) $total_multicriterial[$i] = $total_multicriterial[$i] + $key;
-			}
-		}
-		
-	}
 	
 }
 
@@ -437,8 +413,8 @@ echo "<hr>Results of algorithm for ".$max_variants." variants<br>";
 echo "<table border='1' cellpadding='2px' style='table-layout: fixed; border-collapse: collapse;'>";
 echo "<tr>";
 echo "<td>Variant</td>";
-echo "<td>Weight of criterial</td>";
-echo "<td>Comtainers</td>";
+echo "<td>M Score</td>";
+echo "<td>Containers</td>";
 echo "<td>Combinations</td>";
 echo "<td>Cuts</td>";
 echo "<td>Used place</td>";
@@ -447,13 +423,13 @@ echo "<td>Percent usage</td>";
 echo "</tr>";
 
 
-asort ($total_multicriterial);
+arsort ($total_multicriterial);
 
 foreach ($total_multicriterial as $key => $val) {
 	
 	echo "<tr>";
 	echo "<td align='center'>".($total_w[$key]+1)."</td>";
-	echo "<td align='center'>".round($total_multicriterial[$key],2)."</td>";
+	echo "<td align='center'>".round($total_multicriterial[$key],3)."</td>";
 	echo "<td align='center'>".$total_cont[$key]."</td>";
 	echo "<td align='center'>".$total_comb[$key]."</td>";
 	echo "<td align='center'>".$total_cut[$key]."</td>";

@@ -38,7 +38,7 @@ if (!$run){
 	echo "<tr>";
 	echo "<td>Number of random variants: </td>";
 	echo "<td><input type='text' value='50' name='v' size='5'></td>";
-	echo "<td> (1 - 100)</td>";
+	echo "<td> (1 - 1000)</td>";
 	echo "<td></td>";
 	echo "<td></td>";
 	echo "</tr>";
@@ -49,32 +49,32 @@ if (!$run){
 
 	echo "<tr>";
 	echo "<td>Minimize number of containers: </td>";
-	echo "<td><input type='text' value='5' name='m1' size='5'></td>";
-	echo "<td> (0 - 9)</td>";
+	echo "<td><input type='text' value='25' name='m1' size='5'></td>";
+	echo "<td> (weight %)</td>";
 	echo "<td></td>";
 	echo "<td></td>";
 	echo "</tr>";
 
 	echo "<tr>";
 	echo "<td>Minimize number of combinations: </td>";
-	echo "<td><input type='text' value='5' name='m2' size='5'></td>";
-	echo "<td> (0 - 9)</td>";
+	echo "<td><input type='text' value='25' name='m2' size='5'></td>";
+	echo "<td> (weight %)</td>";
 	echo "<td></td>";
 	echo "<td></td>";
 	echo "</tr>";
 
 	echo "<tr>";
 	echo "<td>Minimize number of edges/cuts: </td>";
-	echo "<td><input type='text' value='5' name='m3' size='5'></td>";
-	echo "<td> (0 - 9)</td>";
+	echo "<td><input type='text' value='25' name='m3' size='5'></td>";
+	echo "<td> (weight %)</td>";
 	echo "<td></td>";
 	echo "<td></td>";
 	echo "</tr>";
 
 	echo "<tr>";
 	echo "<td>Minimize unused space: </td>";
-	echo "<td><input type='text' value='5' name='m4' size='5'></td>";
-	echo "<td> (0 - 9)</td>";
+	echo "<td><input type='text' value='25' name='m4' size='5'></td>";
+	echo "<td> (weight %)</td>";
 	echo "<td></td>";
 	echo "<td></td>";
 	echo "</tr>";
@@ -189,6 +189,18 @@ if (!$run){
 
 	echo "</table>";
 
+	echo "<table>";
+	echo "<tr>";
+	echo "<td>or all objects: </td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td>Sizes <input type='text' value='' name='size_' size='100'></td>";
+	echo "</tr>";
+	echo "<tr>";
+	echo "<td>Numbers <input type='text' value='' name='number_' size='100'></td>";
+	echo "</tr>";
+	echo "</table>";
+
 	echo "<br><INPUT TYPE='submit' VALUE='Run Algorithm'></form>";
 }else{
 
@@ -199,7 +211,7 @@ if (!$run){
 
 	$v = checking ($_POST['v']);
 	if ($v < 1) $v = 1;
-	if ($v > 100) $v = 100;
+	if ($v > 1000) $v = 1000;
 	
 	$max_variants = $v;
 
@@ -211,10 +223,10 @@ if (!$run){
 	$m3 = checking ($_POST['m3']);
 	$m4 = checking ($_POST['m4']);
 	
-	if (($m1<0)or($m1>9)) $m1 = 5;
-	if (($m2<0)or($m2>9)) $m2 = 5;
-	if (($m3<0)or($m3>9)) $m3 = 5;
-	if (($m4<0)or($m4>9)) $m4 = 5;
+	//if (($m1<0)or($m1>9)) $m1 = 5;
+	//if (($m2<0)or($m2>9)) $m2 = 5;
+	//if (($m3<0)or($m3>9)) $m3 = 5;
+	//if (($m4<0)or($m4>9)) $m4 = 5;
 	
 	
 	$container = checking ($_POST['container']);
@@ -302,6 +314,36 @@ if (!$run){
 	if ($size8>$container) $size8 = $container;
 	if ($size9>$container) $size9 = $container;
 	if ($size10>$container) $size10 = $container;
+	
+	$size_ = checking ($_POST['size_']);
+	if ($size_){
+		$size_array = explode(",",$size_);
+		$size1 = $size_array[0];
+		$size2 = $size_array[1];
+		$size3 = $size_array[2];
+		$size4 = $size_array[3];
+		$size5 = $size_array[4];
+		$size6 = $size_array[5];
+		$size7 = $size_array[6];
+		$size8 = $size_array[7];
+		$size9 = $size_array[8];
+		$size10 = $size_array[9];
+	}
+	$number_ = checking ($_POST['number_']);
+	if ($number_){
+		$number_array = explode(",",$number_);
+		$number1 = $number_array[0];
+		$number2 = $number_array[1];
+		$number3 = $number_array[2];
+		$number4 = $number_array[3];
+		$number5 = $number_array[4];
+		$number6 = $number_array[5];
+		$number7 = $number_array[6];
+		$number8 = $number_array[7];
+		$number9 = $number_array[8];
+		$number10 = $number_array[9];
+	}
+	
 	
 	$parts = Array();
 	if (($size1)and($number1)) $parts[$size1]=$number1;
